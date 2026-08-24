@@ -44,19 +44,48 @@ while True:
             # Após isso deve-se ter uma formula para calcular e gravar a área. 
             
             print(f"Plantio '{nome_plantio}' gravado com sucesso!")
+
+
+
         case 2:
             print("\n----------- CONSULTAR PLANTIOS -----------")
             # Matheus - Percorre todos os plantios e imprime no terminal
             for n, plantio in enumerate(plantios):
                 print(f"{n + 1}. {plantio}")
                 print(f"- Cultura: {culturas[n]}")
+                print(f"- Área: {areas[n]}m²")
                 #print(f"- Área: {areas[n]}") <- Falta cálculo de área para habilitar
+
+
+
         case 3:
             print("\n---------- ATUALIZAR PLANTIO ----------")
+            print("Escolha o plantio que deseja atualizar:")
+            # Matheus - Percorre todos os plantios e imprime no terminal
+            for n, plantio in enumerate(plantios):
+                print(f"{n + 1}. {plantio}")
+                print(f"- Cultura: {culturas[n]}")
+                print(f"- Área: {areas[n]}m²")
+            opcao_plantio = int(input("Escolha uma opção: "))
+
+
+
         case 4:
             print("\n----------- EXCLUIR PLANTIO -----------")
+            print("Escolha o plantio que deseja excluir:")
+            # Matheus - Percorre todos os plantios e imprime no terminal
+            for n, plantio in enumerate(plantios):
+                print(f"{n + 1}. {plantio}")
+                print(f"- Cultura: {culturas[n]}")
+                print(f"- Área: {areas[n]}m²")
+            opcao_plantio = int(input("Escolha uma opção: "))
+
+
         case 5:
             print("\n----------- CALCULAR INSUMOS -----------")
+
+
+
         case 6:
             # Matheus - Break para sair do loop do Menu, ou seja, sair do programa
             print("\nEncerrando programa...")
