@@ -1,3 +1,5 @@
+ import math  # João - necessário para calcular área do círculo (pi)
+
 # Matheus - Dados a serem gravados em vetores(listas)
 plantios = []
 culturas = []
@@ -40,11 +42,40 @@ while True:
             while opcao_cultura < 1 or opcao_cultura > 2:
                 print("Opção inválida.")
                 opcao_cultura = int(input("Escolha uma opção: "))
-            
-            # Aqui deve ser pedido e gravado os dados como: largura/comprimento ou raio (dependendo da cultura)
-            # Após isso deve-se ter uma formula para calcular e gravar a área. 
-            
-            print(f"Plantio '{nome_plantio}' gravado com sucesso!")
+
+            # ----- João (Pessoa 2): cálculo da área -----
+            if opcao_cultura == 1:
+                # Soja = círculo (pivô central): área = pi x raio²
+                raio = float(input("Digite o raio do pivô (em metros): "))
+                area = math.pi * raio ** 2
+                nome_cultura = "Soja"
+                # essa cultura não usa comprimento/largura, então grava 0
+                raios.append(raio)
+                comprimentos.append(0)
+                larguras.append(0)
+            else:
+                # Milho = retângulo (talhão): área = comprimento x largura
+                comprimento = float(input("Digite o comprimento do talhão (em metros): "))
+                largura = float(input("Digite a largura do talhão (em metros): "))
+                area = comprimento * largura
+                nome_cultura = "Milho"
+                # essa cultura não usa raio, então grava 0
+                comprimentos.append(comprimento)
+                larguras.append(largura)
+                raios.append(0)
+
+            # grava o resto dos dados na mesma posição das listas
+            plantios.append(nome_plantio)
+            culturas.append(nome_cultura)
+            areas.append(round(area, 2))
+
+            # reserva o lugar pros insumos (Pessoa 3 preenche na opção 5)
+            insumos.append("")
+            dosagens.append(0)
+
+            print(f"\nPlantio '{nome_plantio}' ({nome_cultura}) gravado com sucesso!")
+            print(f"Área calculada: {round(area, 2)} m²")
+            # ----- fim da parte do João -----
 
 
 
@@ -104,7 +135,7 @@ while True:
                 print("Voltando ao menu principal...")
 
 
-             
+
         case 5:
             print("\n----------- CALCULAR INSUMOS -----------")
             print("Plations cadastrados:")
