@@ -40,22 +40,9 @@ while True:
                 print("Opção inválida.")
                 opcao_cultura = int(input("Escolha uma opção: "))
             
-            # Matheus - Gravando nos vetores
-            if opcao_cultura == 1:
-                comprimento_terreno = float(input("Comprimento do terreno (m): "))
-                largura_terreno = float(input("Largura do terreno (m): "))
-                culturas.append("Soja")
-                comprimentos.append(comprimento_terreno)
-                larguras.append(largura_terreno)
-                raios.append(None)
-            else:
-                raio_terreno = float(input("Raio do terreno (m): "))
-                culturas.append("Milho")
-                raios.append(raio_terreno)
-                comprimentos.append(None)
-                larguras.append(None)
-            plantios.append(nome_plantio)
-
+            # Aqui deve ser pedido e gravado os dados como: largura/comprimento ou raio (dependendo da cultura)
+            # Após isso deve-se ter uma formula para calcular e gravar a área. 
+            
             print(f"Plantio '{nome_plantio}' gravado com sucesso!")
         case 2:
             print("\n----------- CONSULTAR PLANTIOS -----------")
