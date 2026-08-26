@@ -10,6 +10,53 @@ areas = []
 insumos = []
 dosagens = []
 
+insumos_por_cultura = {
+    "Soja": [
+        "Fungicida",
+        "Herbicida",
+        "Inseticida",
+        "Fertilizante NPK",
+        "Adubo foliar",
+        "Calcario",
+    ],
+    "Milho": [
+        "Herbicida",
+        "Fungicida",
+        "Inseticida",
+        "Fertilizante nitrogenado",
+        "Fertilizante NPK",
+        "Calcario",
+    ],
+}
+
+
+def escolher_insumo(cultura, titulo):
+    opcoes_insumos = insumos_por_cultura[cultura]
+
+    print(f"\n{titulo} para {cultura}:")
+    for n, insumo in enumerate(opcoes_insumos):
+        print(f"{n + 1}. {insumo}")
+    print("0. Digitar outro insumo")
+
+    while True:
+        try:
+            opcao_insumo = int(input("Escolha uma opcao: "))
+            if opcao_insumo >= 0 and opcao_insumo <= len(opcoes_insumos):
+                break
+            print("Opcao invalida.")
+        except ValueError:
+            print("Entrada invalida. Digite um numero inteiro.")
+
+    if opcao_insumo == 0:
+        while True:
+            produto = input("Digite o produto/insumo: ").strip()
+            if produto != "":
+                return produto
+            print("Produto/insumo nao pode ficar vazio.")
+
+    return opcoes_insumos[opcao_insumo - 1]
+
+
 # Matheus - Menu de escolhas
 while True:
     print("\n---------- FARMTECH SOLUTIONS ----------")
@@ -197,14 +244,7 @@ while True:
                             print("Voltando ao menu principal...")
 
                     elif opcao_atualizacao == 3:
-                        if culturas[indice] == "Soja":
-                            insumo_padrao = "Fungicida"
-                        else:
-                            insumo_padrao = "Herbicida"
-
-                        produto = input(f"Novo produto/insumo ({insumo_padrao}): ").strip()
-                        if produto == "":
-                            produto = insumo_padrao
+                        produto = escolher_insumo(culturas[indice], "Novo produto/insumo")
 
                         while True:
                             try:
@@ -286,14 +326,7 @@ while True:
                 if opcao_plantio != 0:
                     indice = opcao_plantio - 1
 
-                    if culturas[indice] == "Soja":
-                        insumo_padrao = "Fungicida"
-                    else:
-                        insumo_padrao = "Herbicida"
-
-                    produto = input(f"Produto/insumo ({insumo_padrao}): ").strip()
-                    if produto == "":
-                        produto = insumo_padrao
+                    produto = escolher_insumo(culturas[indice], "Produto/insumo")
 
                     print("\nUnidade da quantidade aplicada por metro:")
                     print("1. mL por metro")
