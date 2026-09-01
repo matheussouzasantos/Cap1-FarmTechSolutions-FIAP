@@ -1,3 +1,4 @@
+import pandas as pd # Matheus - necessario para gravar em arquivo csv
 import math  # Joao - necessario para calcular area do circulo (pi)
 
 # Matheus - Dados a serem gravados em vetores(listas)
@@ -9,6 +10,7 @@ raios = []
 areas = []
 insumos = []
 dosagens = []
+dados_para_csv = []
 
 insumos_por_cultura = {
     "Soja": [
@@ -86,7 +88,7 @@ while True:
             opcao_cultura = int(input("\nOpcao: "))
 
             # Matheus - Teste para ver se a opcao escolhida existe
-            while opcao_cultura < 1 or opcao_cultura > 2:
+            while opcao_cultura < 0 or opcao_cultura > 2:
                 print("Opcao invalida.")
                 opcao_cultura = int(input("Escolha uma opcao: "))
 
@@ -393,6 +395,19 @@ while True:
 
         case 6:
             # Matheus - Break para sair do loop do Menu, ou seja, sair do programa
+            for n, nome in enumerate(plantios):
+                dados_para_csv.append({
+                    "Nome Plantio": plantios[n], 
+                    "Cultura": culturas[n],
+                    "Insumo": insumos[n],
+                    "Dosagem": dosagens[n],
+                    "Comprimento": comprimentos[n],
+                    "Largura": larguras[n],
+                    "Raio": raios[n],
+                    "Area": areas[n]
+                })
+            df = pd.DataFrame(dados_para_csv)
+            df.to_csv("dados_fazenda.csv", index=False)
             print("\nEncerrando programa...")
             break
 # Matheus - Fim menu
