@@ -407,7 +407,7 @@ while True:
                     "Area": areas[n]
                 })
             df = pd.DataFrame(dados_para_csv)
-            df.to_csv("plantios_cadastrados.csv", index=False)
+            df.to_csv("dados_fazenda.csv", index=False)
             print("\nEncerrando programa...")
             break
 # Matheus - Fim menu
