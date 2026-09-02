@@ -25,11 +25,28 @@ if (!file.exists(arquivo_csv)) {
   print(dados)
   cat("\n---------------------------------------------------------\n")
   
-  # 4. Cálculo de Média e Desvio Padrão - ÁREA (m²)
-  media_area <- mean(dados$area_m2, na.rm = TRUE)
-  dp_area    <- sd(dados$area_m2, na.rm = TRUE)
+  # --- TRATAMENTO DAS COLUNAS (Compatibilidade com o Python do Matheus) ---
   
-  # Tratar caso de desvio padrão em amostras com apenas 1 registro (retorna NA no R)
+  # Identificar a coluna de Área (pode vir como 'Area' ou 'area_m2')
+  col_area <- if ("Area" %in% colnames(dados)) dados$Area else dados$area_m2
+  
+  # Garantir que os dados da Área sejam numéricos
+  col_area <- as.numeric(col_area)
+  
+  # Identificar a coluna de Insumos (se não existir 'total_insumo_litros', usa 'Dosagem')
+  if ("total_insumo_litros" %in% colnames(dados)) {
+    col_insumo <- as.numeric(dados$total_insumo_litros)
+  } else if ("Dosagem" %in% colnames(dados)) {
+    col_insumo <- as.numeric(dados$Dosagem)
+  } else {
+    col_insumo <- c(0)
+  }
+  
+  # 4. Cálculo de Média e Desvio Padrão - ÁREA (m²)
+  media_area <- mean(col_area, na.rm = TRUE)
+  dp_area    <- sd(col_area, na.rm = TRUE)
+  
+  # Se houver apenas 1 registro ou valores iguais, o desvio padrão pode vir NA
   if (is.na(dp_area)) dp_area <- 0
   
   cat("--> ESTATÍSTICAS DE ÁREA PLANTADA (m²):\n")
@@ -37,14 +54,14 @@ if (!file.exists(arquivo_csv)) {
   cat(sprintf("   • Desvio Padrão das Áreas:  %.2f m²\n", dp_area))
   cat("---------------------------------------------------------\n")
   
-  # 5. Cálculo de Média e Desvio Padrão - INSUMOS (Litros)
-  media_insumo <- mean(dados$total_insumo_litros, na.rm = TRUE)
-  dp_insumo    <- sd(dados$total_insumo_litros, na.rm = TRUE)
+  # 5. Cálculo de Média e Desvio Padrão - INSUMOS
+  media_insumo <- mean(col_insumo, na.rm = TRUE)
+  dp_insumo    <- sd(col_insumo, na.rm = TRUE)
   
   if (is.na(dp_insumo)) dp_insumo <- 0
   
-  cat("--> ESTATÍSTICAS DE MANEJO DE INSUMOS (Litros):\n")
-  cat(sprintf("   • Média de Insumos:         %.2f Litros\n", media_insumo))
-  cat(sprintf("   • Desvio Padrão de Insumos: %.2f Litros\n", dp_insumo))
+  cat("--> ESTATÍSTICAS DE MANEJO DE INSUMOS:\n")
+  cat(sprintf("   • Média de Insumos:         %.2f\n", media_insumo))
+  cat(sprintf("   • Desvio Padrão de Insumos: %.2f\n", dp_insumo))
   cat("=========================================================\n")
 }
