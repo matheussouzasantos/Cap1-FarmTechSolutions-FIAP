@@ -1,8 +1,10 @@
-# FarmTech Solutions
+# 🌱 FarmTech Solutions
 
-Projeto desenvolvido para a atividade da FIAP - Inteligência Artificial.
+Projeto desenvolvido para a atividade avaliativa do curso de **Inteligência Artificial da FIAP**, com o objetivo de aplicar conceitos de programação em **Python**, análise de dados em **R**, integração com **API meteorológica** e versionamento colaborativo utilizando **Git e GitHub**.
 
-## Integrantes
+---
+
+## 👥 Integrantes
 
 - Matheus Souza Santos
 - Andrei Lourenço
@@ -10,57 +12,523 @@ Projeto desenvolvido para a atividade da FIAP - Inteligência Artificial.
 - Murilo Franco
 - Lucas Lima
 
-## Objetivo
+---
 
-Desenvolver uma aplicação para auxiliar no gerenciamento de culturas agrícolas, incluindo cálculo de área de plantio, manejo de insumos e análise estatística utilizando Python e R.
+## 📌 Sobre o projeto
 
-## Tecnologias
+A **FarmTech Solutions** é uma aplicação desenvolvida para auxiliar no gerenciamento de culturas agrícolas.
 
-- Python
+O sistema permite cadastrar e administrar áreas de plantio de **Soja** e **Milho**, calcular automaticamente suas áreas, realizar cálculos relacionados ao manejo de insumos e exportar os dados para um arquivo CSV.
+
+Posteriormente, os dados gerados pelo programa Python são utilizados por scripts em **R** para realização de análises estatísticas.
+
+O projeto também conta com uma integração com a API pública **Open-Meteo**, utilizada para consultar informações meteorológicas em tempo real.
+
+---
+
+## 🌾 Culturas utilizadas
+
+O projeto trabalha com duas culturas agrícolas:
+
+### Soja
+
+Para a soja foi considerado um plantio em formato **circular**, representando um sistema de pivô central.
+
+A área é calculada utilizando:
+
+```text
+Área = π × raio²
+```
+
+### Milho
+
+Para o milho foi considerado um talhão em formato **retangular**.
+
+A área é calculada utilizando:
+
+```text
+Área = comprimento × largura
+```
+
+Todas as áreas são armazenadas em **metros quadrados (m²)**.
+
+---
+
+# ⚙️ Funcionalidades
+
+## 🐍 Aplicação em Python
+
+O programa principal apresenta o seguinte menu:
+
+```text
+---------- FARMTECH SOLUTIONS ----------
+
+1. Cadastrar plantio
+2. Consultar plantios
+3. Atualizar plantio
+4. Excluir plantio
+5. Calcular manejo de insumos
+6. Sair
+```
+
+### 1. Cadastrar plantio
+
+Permite cadastrar um novo plantio informando:
+
+- Nome do plantio
+- Cultura
+- Dimensões da área
+
+Dependendo da cultura escolhida, o programa solicita diferentes informações.
+
+**Soja:**
+
+- Raio do pivô
+
+**Milho:**
+
+- Comprimento do talhão
+- Largura do talhão
+
+A área é calculada automaticamente pelo sistema.
+
+---
+
+### 2. Consultar plantios
+
+Exibe todos os plantios cadastrados contendo informações como:
+
+- Nome
+- Cultura
+- Área
+- Insumo utilizado
+- Quantidade de insumo necessária
+
+---
+
+### 3. Atualizar plantio
+
+Permite modificar dados de um plantio já cadastrado.
+
+É possível alterar:
+
+- Nome do plantio
+- Cultura e dimensões da área
+- Manejo de insumos
+
+Caso a cultura ou as dimensões sejam alteradas, o sistema recalcula a área automaticamente.
+
+O manejo de insumos anterior também é removido quando necessário para evitar inconsistências nos dados.
+
+---
+
+### 4. Excluir plantio
+
+Permite selecionar e remover um plantio cadastrado.
+
+Além do nome do plantio, todos os dados associados àquela posição dos vetores também são removidos.
+
+---
+
+### 5. Calcular manejo de insumos
+
+O sistema possui sugestões de insumos de acordo com a cultura selecionada.
+
+Entre os insumos disponíveis estão:
+
+#### Soja
+
+- Fungicida
+- Herbicida
+- Inseticida
+- Fertilizante NPK
+- Adubo foliar
+- Calcário
+
+#### Milho
+
+- Herbicida
+- Fungicida
+- Inseticida
+- Fertilizante nitrogenado
+- Fertilizante NPK
+- Calcário
+
+Também é possível informar manualmente outro tipo de insumo.
+
+Para realizar o cálculo, o programa solicita:
+
+- Quantidade aplicada por metro
+- Unidade utilizada (`mL/metro` ou `litros/metro`)
+- Comprimento de cada rua
+- Quantidade de ruas
+
+O cálculo realizado é:
+
+```text
+Quantidade total = dose por metro × comprimento da rua × quantidade de ruas
+```
+
+Quando a entrada é realizada em mililitros, o resultado também é convertido automaticamente para litros.
+
+---
+
+## 💾 Armazenamento dos dados
+
+Durante a execução do programa, os dados são armazenados utilizando **vetores/listas em Python**, conforme solicitado pela atividade.
+
+Entre os vetores utilizados estão:
+
+```python
+plantios
+culturas
+comprimentos
+larguras
+raios
+areas
+insumos
+dosagens
+```
+
+Cada posição representa os dados correspondentes a um mesmo plantio.
+
+Ao selecionar a opção **6 - Sair**, o programa organiza os dados utilizando a biblioteca **Pandas** e gera o arquivo:
+
+```text
+dados_fazenda.csv
+```
+
+O CSV contém as seguintes colunas:
+
+```text
+Nome Plantio
+Cultura
+Insumo
+Dosagem
+Comprimento
+Largura
+Raio
+Area
+```
+
+Esse arquivo é posteriormente utilizado pela aplicação em R.
+
+---
+
+# 📊 Análise estatística em R
+
+O arquivo:
+
+```text
+analise_estatistica.r
+```
+
+é responsável por importar os dados armazenados em:
+
+```text
+dados_fazenda.csv
+```
+
+Antes de iniciar a análise, o programa verifica se o arquivo CSV existe.
+
+Caso não exista, é exibida uma mensagem solicitando que a aplicação Python seja executada primeiro.
+
+São calculadas estatísticas relacionadas às áreas dos plantios e ao manejo de insumos.
+
+### Área plantada
+
+O programa calcula:
+
+- Média das áreas
+- Desvio padrão das áreas
+
+### Manejo de insumos
+
+Também são calculados:
+
+- Média da quantidade de insumos
+- Desvio padrão da quantidade de insumos
+
+Os resultados são exibidos diretamente no terminal.
+
+---
+
+# 🌦️ API Meteorológica
+
+Como funcionalidade adicional da atividade, foi implementada uma integração em **R** com a API pública:
+
+**Open-Meteo**
+
+Arquivo responsável:
+
+```text
+clima_api.r
+```
+
+A aplicação realiza uma requisição HTTP para obter informações meteorológicas atuais.
+
+Entre os dados apresentados estão:
+
+- Localização
+- Temperatura atual
+- Condição meteorológica
+- Velocidade do vento
+- Direção do vento
+
+As coordenadas podem ser alteradas no código para representar a localização desejada da fazenda.
+
+A integração utiliza as bibliotecas:
+
+```r
+httr
+jsonlite
+```
+
+---
+
+# 📁 Estrutura do projeto
+
+```text
+Cap1-FarmTechSolutions-FIAP/
+│
+├── main.py
+│   └── Sistema principal de gerenciamento da fazenda
+│
+├── dados_fazenda.csv
+│   └── Dados exportados pela aplicação Python
+│
+├── analise_estatistica.r
+│   └── Análise estatística dos dados da fazenda
+│
+├── clima_api.r
+│   └── Integração com a API meteorológica Open-Meteo
+│
+├── main_analise.r
+│   └── Arquivo responsável por executar os scripts em R
+│
+└── README.md
+    └── Documentação do projeto
+```
+
+---
+
+# 🛠️ Tecnologias utilizadas
+
+### Python
+
+- Python 3
+- Pandas
+- Math
+
+### R
+
 - R
-- Git / GitHub
+- httr
+- jsonlite
 
-## Introducao a atividade
+### Outras ferramentas
 
-Atenção Atividade Avaliativa:
+- Git
+- GitHub
+- CSV
+- Open-Meteo API
 
-- Verifique se o arquivo do upload está correto, não é possível enviar um outro arquivo após fechamento da entrega na plataforma ou correção do professor.
+---
 
-- Não deixe para realizar a entrega da atividade nos últimos minutos do prazo, você pode ter algum problema e perder a entrega. As entregas são realizadas apenas pela plataforma.
+# 🚀 Como executar o projeto
 
-- Não disponibilize a resposta da sua atividade em grupos de WhatsApp, Discord, Microsoft Teams, pois pode gerar plágio e zerar a atividade para todos.
+## 1. Clonar o repositório
 
-- Você tem um período máximo de 15 dias após a publicação da nota para solicitar a revisão da correção.
+```bash
+git clone https://github.com/matheussouzasantos/Cap1-FarmTechSolutions-FIAP.git
+```
 
-Introdução:
+Entre na pasta do projeto:
 
-Você e seu grupo estão na Startup FarmTech Solutions, trabalhando na equipe de Dev., e obviamente, vocês podem usar o ChatGPT ou Germini ou outra Inteligência Artificial (IA) de seu interesse para ajudar com essa tarefa — a FIAP não condena o uso de IAs em seus estudos, desde que o aluno tenha o olhar crítico para filtrar os erros e acertos das respostas propostas por elas.
+```bash
+cd Cap1-FarmTechSolutions-FIAP
+```
 
-A FarmTech Solutions fechou um contrato com uma fazenda que investe em inovação e tecnologia para aumentar sua produtividade e pretende migrar para a Agricultura Digital. E para atender esse importante cliente, a FarmTech vai começar a pôr a mão na massa, desenvolvendo uma aplicação em Python que tenha:
+---
 
-a. O projeto em Python deve dar suporte a 2 tipos de culturas. O grupo vai decidir quais culturas trabalhar. Pense nas principais culturas do seu estado.
+## 2. Instalar o Python
 
-b. Cálculo de área de plantio para cada cultura. O grupo decide qual tipo de figura geométrica deve-se calcular como área plantada para cada tipo de cultura;
+É recomendado utilizar **Python 3.10 ou superior**.
 
-c. Cálculo do manejo de insumos. O grupo escolhe o tipo de cultura, o produto e a quantidade necessária, como por exemplo, aplicar fosfato no café e pulverizar 500 mL/metro com o trator. Quantas ruas a lavoura têm? E assim, quantos litros serão necessários?
+Verifique a instalação:
 
-d. Os dados devem estar organizados em vetores;
+```bash
+python --version
+```
 
-e. A aplicação em Python precisa ter menu de opções para:
+ou:
 
-Entrada de dados (entrada dos dados para realizar os cálculos);
-Saída de dados (como impressões de dados no terminal);
-Atualização de dados numa posição qualquer do vetor;
-Deleção de dados do vetor de dados;
-Ter a opção “sair do programa”;
-f. Usar rotinas de loop e decisão.
+```bash
+python3 --version
+```
 
-g. Na sequência, usar esses dados para desenvolver uma aplicação em R para calcular dados estatísticos básicos, como média e desvio. Deve-se usar o GitHub para versionamento do projeto, trabalhando em equipe para simular um ambiente de desenvolvimento colaborativo.
+---
 
-h. Na disciplina de Formação Social, o grupo resumirá o artigo disponível no Google Acadêmico (https://www.alice.cnptia.embrapa.br/alice/bitstream/doc/1003485/1/CAP8.pdf). O resumo é de até 1 folha A4, letra Arial 11, espaçamento 1 entre linhas, margens direita e esquerda em 2 cm.
+## 3. Instalar as dependências Python
 
-Ir além: usando R (e não Python), conectar-se a uma API meteorológica pública para coletar dados climáticos, processar e exibir as informações meteorológicas via texto simples no terminal.
+O projeto utiliza a biblioteca Pandas.
 
-O que precisa entregar?
+```bash
+pip install pandas
+```
 
-Compacte todos os arquivos num único arquivo ZIP: Python, R, o resumo do artigo e o link do vídeo no Youtube. Além disso, grave um vídeo simples, de até 5 minutos, usando o seu celular ou um gravador de tela simples (por exemplo, streamyard.com) mostrando a sua tela do computador, comprovando o funcionamento completo da sua aplicação Python e R. Poste o seu vídeo no YouTube, marque como “não listado” (para deixá-lo no privado) e adicione o link à um arquivo TXT no pacote do ZIP.
+---
+
+## 4. Executar a aplicação Python
+
+No terminal:
+
+```bash
+python main.py
+```
+
+Realize os cadastros e cálculos desejados.
+
+Ao terminar, selecione:
+
+```text
+6. Sair
+```
+
+O programa irá gerar automaticamente:
+
+```text
+dados_fazenda.csv
+```
+
+---
+
+# 📈 Executando a aplicação em R
+
+## 1. Verificar a instalação do R
+
+```bash
+Rscript --version
+```
+
+---
+
+## 2. Instalar as bibliotecas necessárias
+
+Abra o R ou RStudio e execute:
+
+```r
+install.packages("httr")
+install.packages("jsonlite")
+```
+
+---
+
+## 3. Executar a análise estatística
+
+Depois de executar o programa Python e gerar o arquivo `dados_fazenda.csv`:
+
+```bash
+Rscript analise_estatistica.r
+```
+
+O terminal apresentará a média e o desvio padrão das áreas e dos insumos cadastrados.
+
+---
+
+## 4. Executar a consulta meteorológica
+
+```bash
+Rscript clima_api.r
+```
+
+O programa irá consultar a API Open-Meteo e apresentar as condições meteorológicas atuais.
+
+---
+
+## 5. Executar todos os componentes em R
+
+Também é possível utilizar o arquivo:
+
+```text
+main_analise.r
+```
+
+para executar os módulos de análise estatística e clima em sequência.
+
+---
+
+# 🔄 Fluxo de funcionamento
+
+```text
+Usuário
+   │
+   ▼
+main.py
+   │
+   ├── Cadastro dos plantios
+   ├── Cálculo das áreas
+   ├── Manejo de insumos
+   ├── Consulta / Atualização / Exclusão
+   │
+   ▼
+dados_fazenda.csv
+   │
+   ▼
+Aplicação em R
+   │
+   ├── analise_estatistica.r
+   │       ├── Média das áreas
+   │       └── Desvio padrão
+   │
+   └── clima_api.r
+           └── Open-Meteo API
+```
+
+---
+
+# 🧠 Conceitos aplicados
+
+Durante o desenvolvimento foram aplicados conceitos como:
+
+- Variáveis
+- Vetores/Listas
+- Estruturas condicionais
+- Estruturas de repetição
+- `match/case`
+- Funções
+- Tratamento de exceções
+- Manipulação de dados
+- Operações matemáticas
+- Leitura e escrita de arquivos CSV
+- DataFrames com Pandas
+- Análise estatística
+- Requisições HTTP
+- Consumo de APIs REST
+- Processamento de JSON
+- Versionamento de código
+- Desenvolvimento colaborativo com Git e GitHub
+
+---
+
+# 🎓 Contexto acadêmico
+
+Este projeto foi desenvolvido como atividade da **FIAP**, simulando o desenvolvimento de uma solução para a startup fictícia **FarmTech Solutions**.
+
+O objetivo da atividade é aplicar conceitos de desenvolvimento de software a um cenário de **Agricultura Digital**, utilizando Python para gerenciamento e processamento dos dados e R para análises estatísticas e integração com serviços externos.
+
+---
+
+## 🔗 Repositório
+
+GitHub:
+
+```text
+https://github.com/matheussouzasantos/Cap1-FarmTechSolutions-FIAP
+```
+
+---
+
+## 📚 FIAP — Inteligência Artificial
+
+Projeto acadêmico desenvolvido para fins educacionais.
